@@ -1,6 +1,6 @@
-# Project1
+# ParasCoin
 
-**TODO: Add description**
+**पारस - pārasa  paarasa (meaning: midas)**
 
 ## Installation
 
