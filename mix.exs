@@ -1,4 +1,4 @@
-defmodule Project1.Mixfile do
+defmodule Paras.Mixfile do
   use Mix.Project
 
   def project do
@@ -8,7 +8,7 @@ defmodule Project1.Mixfile do
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      escript: [main_module: Project1]
+      escript: [main_module: Paras]
     ]
   end
 
