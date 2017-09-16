@@ -67,7 +67,7 @@ Drawn as a tree, the network looks like so (arrows indicate flow of messages)
                       |
                       V
 ------------------------------------------------------
-|(Node1)     | (Node2)   | (Node 3)  ... | (Node n)
+|(Node1)     | (Node2)    | (Node 3)   ... | (Node n)
 |->MinerPool |->MinerPool |->MinerPool     |->MinerPool
   |->Miner     |->Miner     |->Miner         |->Miner
   |->Miner     |->Miner     |->Miner         |->Miner
