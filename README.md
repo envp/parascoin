@@ -71,7 +71,7 @@ Drawn as a tree, the network looks like so (arrows indicate flow of messages)
 |->MinerPool |->MinerPool |->MinerPool     |->MinerPool
   |->Miner     |->Miner     |->Miner         |->Miner
   |->Miner     |->Miner     |->Miner         |->Miner
-  ...         ...         ...             ...
+  ...          ...          ...              ...
   |->Miner     |->Miner     |->Miner         |->Miner
   ---------------------------------------------------
                       |-> MiningServer
