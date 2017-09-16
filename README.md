@@ -15,7 +15,10 @@ To run this application EPMD must be running as a daemon, run `epmd -daemon` bef
 ```
 ## Discussion
 
-1. Work unit size: Each node has 512 workers
+1. **Work unit size**: Each node has `10 * num_logical_processors` workers, all of which recieve messages to process disjoint blocks of size 1024. I found that using a large number of workers in each node was better because:
+    - There is always at least one process mining a range even when some other process has completed its share and is dealing with network IO for sending messages.
+    - Smaller work unit sizes with larger process pools enable maintaing a more fine-grained save state should the server ever crash. This means that too many old messages are not repeated should the server ever respawn with a previously known good state
+
 2. Output of `./project1 4`:
 ```
 $ ./project1 4

@@ -90,9 +90,8 @@ defmodule Paras.CLI do
     Node.start(own_name)
     Node.set_cookie(@cookie)
 
-    workers = 1..MinerPool.default_pool_size() |> Enum.map(fn _ -> elem(Miner.start_link, 1) end)
     {:ok, pool} = MinerPool.start_link
-    MinerPool.add_workers(pool, workers)
+    MinerPool.populate(pool)
     pool
   end
 
