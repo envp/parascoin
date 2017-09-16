@@ -19,7 +19,7 @@ defmodule Paras.CLI do
   def main(args) do
     case args |> parse_args do
       {:ok, num_zeros} when is_integer(num_zeros) ->
-        own_name = :erlang.list_to_atom('master@' ++ IpAddress.get_external_ip())
+        own_name = :erlang.list_to_atom('master@' ++ IpAddress.get_ip())
         pool_pid = setup_node(own_name)
         MiningServer.start_link
         MiningServer.register(node(), pool_pid)
@@ -27,7 +27,7 @@ defmodule Paras.CLI do
         work(printer_pid, num_zeros, 0)
 
       {:ok, remote_address} ->
-        own_name = :erlang.list_to_atom(elem(:inet.gethostname, 1) ++ '@' ++ IpAddress.get_external_ip())
+        own_name = :erlang.list_to_atom(elem(:inet.gethostname, 1) ++ '@' ++ IpAddress.get_ip())
         rem_name = :erlang.list_to_atom('master@' ++ :inet.ntoa(remote_address))
         pool_pid = setup_node(own_name)
         Node.connect(rem_name)
@@ -108,12 +108,8 @@ defmodule Paras.CLI do
   defp work(printer_pid, target, first) do
     if :global.whereis_name(:mining_server) |> is_pid do
       num_miners = MiningServer.get_num_workers
-      if num_miners > 0 do
-        MiningServer.mine(printer_pid, target, first)
-        work(printer_pid, target, first + num_miners * Miner.block_size() - 1)
-      else
-        work(printer_pid, target, first)
-      end
+      MiningServer.mine(printer_pid, target, first)
+      work(printer_pid, target, first + num_miners * Miner.block_size() - 1)
     end
   end
 
