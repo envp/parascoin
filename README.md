@@ -1,22 +1,22 @@
 # ParasCoin
 
-> Paras (पारस) (pārasa  paarasa) the hindi equivalent of midas or the philosopher's stone
+> Paras (पारस) (pārasa  paarasa) the hindi word equivalent of midas or the philosopher's stone
 
 This project creates a cryptocurrency miner network that looks for strings whose `SHA256` has `k` leading zeros, `k` being fixed for each network
 
 ## Building the code
 
-Use `mix escript.build` to generate a local escript called `project1`
+Use `mix escript.build` to generate a local escript binary called `project1`
 
+### Note about running the code
+To run this application EPMD must be running as a daemon, run `epmd -daemon` before starting the application to avoid errors like:
+```
+** (FunctionClauseError) no function clause matching in :erlang.set_cookie/2
+```
 ## Discussion
 
-* Work unit size:
-
-```
-@TODO
-```
-
-* Output of `./project1 4`:
+1. Work unit size: Each node has 512 workers
+2. Output of `./project1 4`:
 ```
 $ ./project1 4
 vyenaman;7P33   0000d9d41ef9a43600d7b68d5da894a3a742ab3d537ab2b891c9495615d462d3
@@ -35,8 +35,9 @@ vyenaman;1xsE   0000f29d6f8592ad49a03fa468d107d6f4c9723bb1e97fba26af203742e31a9c
 vyenaman;d5x7   00002dd38f58c64e7a2edb2d0ee887c6d791199ef82a5e3720d899d67e15c6d0
 ```
 
-* Running time of `./project1 4` with CPU and Real time ratios:
+3. Running time of `./project1 4` with CPU and Real time ratios:
 I ran the binary for exactly 60s (using the `timeout` command) to get the following results:
+
 ```
 $ time timeout -sHUP 60s ./project1 4 > /dev/null
 
@@ -44,19 +45,45 @@ real    1m.009s
 user    7m47.740s
 sys     0m2.700s
 ```
+  * The ratio of CPU time to REAL time is: `467 / 60 ~ 7.78`
 
-* The ratio of CPU time to REAL time is: `467 / 60 ~ 7.78`
-* The same technique was used over 20 runs to provide the following mean CPU time measurements:
-  - Mean CPU time for 60s of execution:
-*
+5. Coin with most zeros:
+    - 7 leading zeros: `vyenaman;kZP1E`
+6. Largest number of working machines in the network:
+    - 8 machines, each with 8 cores
 
 ## Architecture
+This section talks about the high level structure of the network and what summarizes the message passing scheme used.
 
-This section talks about the high level structure of the network and what summarizes each node does
+* There is a single globally named process that manages all worker nodes and itself called the `MiningServer` which is a GenServer with the name `{:global, :mining_server}`
+  - This node is singluar in the network and responsible for distributing work among its children which are the process pool managers from remote nodes
+* Each node has a locally named process pool backed by the GenServer `MinerPool`, which recieves work messages from the master node `MiningServer` and translates them appropriately for its children to do work with. All commuincation is async with a callback to a master node's listening process
+* The leaf in this tree of messages is a `Miner` node which does the real heavy lifting in computing the `SHA256` of a range of numbers to find valid coin-strings
+
+Drawn as a tree, the network looks like so (arrows indicate flow of messages)
+
+```
+                  MiningServer
+                      |
+                      V
+------------------------------------------------------
+|(Node1)     | (Node2)   | (Node 3)  ... | (Node n)
+|->MinerPool |->MinerPool |->MinerPool     |->MinerPool
+  |->Miner     |->Miner     |->Miner         |->Miner
+  |->Miner     |->Miner     |->Miner         |->Miner
+  ...         ...         ...             ...
+  |->Miner     |->Miner     |->Miner         |->Miner
+  ---------------------------------------------------
+                      |-> MiningServer
+
+```
+
 
 ## Decisions
-This section goes over the various decisions that were made with regards to ambiguities in the project description
+This section goes over the various decisions that were made with regards to ambiguities in the project description:
 
 * **Coin format**: `<gator_id>;<base62_suffix>`
 
-* **Space enumeration**: The server linearly enumerates over the space in blocks of size 1024, I found this to be a good value to use for local and remote nodes so that processes do not idle as much
+* **Space enumeration**: The server linearly enumerates over the space in blocks of size 1024, I found this to be a good value to use for local and remote nodes so that processes are almost always occupied
+
+* **Node connectivity**: The application relies on the `Node` library that elixir ships with. EPMD must be started as a background process before running this code. To do so, run `epmd -daemon` in the shell session before running the project's binary
