@@ -41,7 +41,7 @@ defmodule Paras.MinerPool do
     workers = 1..__MODULE__.default_pool_size()
     |> Enum.map(fn _ -> elem(Miner.start_link, 1) end)
 
-    __MODULE__.add_workers(pid, workers)
+    GenServer.cast(pid, {:add_workers, workers})
   end
 
   @doc """

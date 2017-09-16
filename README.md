@@ -1,19 +1,6 @@
-# ParasCoin
+# COP5615 - Project 1
 
-> Paras (पारस) (pārasa  paarasa) the hindi word equivalent of midas or the philosopher's stone
-
-This project creates a cryptocurrency miner network that looks for strings whose `SHA256` has `k` leading zeros, `k` being fixed for each network
-
-## Building the code
-
-Use `mix escript.build` to generate a local escript binary called `project1`
-
-### Note about running the code
-To run this application EPMD must be running as a daemon, run `epmd -daemon` before starting the application to avoid errors like:
-```
-** (FunctionClauseError) no function clause matching in :erlang.set_cookie/2
-```
-## Discussion
+## Results
 
 1. **Work unit size**: Each node has `10 * num_logical_processors` workers, all of which recieve messages to process disjoint blocks of size 1024. I found that using a large number of workers in each node was better because:
     - There is always at least one process mining a range even when some other process has completed its share and is dealing with network IO for sending messages.
