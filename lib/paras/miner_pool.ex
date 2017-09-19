@@ -2,7 +2,6 @@ defmodule Paras.MinerPool do
   @moduledoc """
   Bare bones process pool that can async-broadcast work messages to all children in its tree
   """
-  @pool_scalar 10
 
   alias Paras.Miner
 
@@ -32,7 +31,7 @@ defmodule Paras.MinerPool do
   @doc """
   Returns the default pool size used `pool_scalar * num_logical_processors`
   """
-  def default_pool_size, do: @pool_scalar * :erlang.system_info(:logical_processors_available)
+  def default_pool_size, do: Application.get_env(:paras, :pool_scalar) * :erlang.system_info(:logical_processors_available)
 
   @doc """
   Populate the pool with the default number of workers

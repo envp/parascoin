@@ -7,7 +7,6 @@ defmodule Paras.Miner do
   use GenServer
 
   @prefix "vyenaman;"
-  @block_size :math.pow(2, 10) |> round
 
   @doc """
   Starts the server in the default state
@@ -35,7 +34,7 @@ defmodule Paras.Miner do
   @doc """
   Return the value of `block_size` attribute used by the Miner
   """
-  def block_size, do: @block_size
+  def block_size, do: Application.get_env(:paras, :block_size)
 
   @doc """
   Computes the sha256 hash of the given string and returns a base16 binary string
@@ -61,7 +60,7 @@ defmodule Paras.Miner do
     |> Stream.filter(&is_coin?(&1, target))
     |> Enum.map(&(@prefix <> &1))
 
-    send printer_pid, {:print, coins}
+    if coins != [], do: send printer_pid, {:print, coins}
 
     {:noreply, state}
   end

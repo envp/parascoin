@@ -1,12 +1,11 @@
 require Logger
 
 defmodule Paras.CLI do
+  use Application
   @moduledoc """
   CLI interface containing entry point `main/1` for running from the CLI
   """
   alias Paras.{Util.IpAddress, Miner, MinerPool, MiningServer}
-
-  @cookie :project1
 
   @doc """
   Runs the application in either client or server mode
@@ -88,7 +87,7 @@ defmodule Paras.CLI do
   """
   defp setup_node(own_name) when is_atom(own_name) do
     Node.start(own_name)
-    Node.set_cookie(@cookie)
+    Node.set_cookie(Application.get_env(:paras, :cookie))
 
     {:ok, pool} = MinerPool.start_link
     MinerPool.populate(pool)

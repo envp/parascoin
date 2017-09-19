@@ -3,7 +3,7 @@ defmodule Paras.Mixfile do
 
   def project do
     [
-      app: :project1,
+      app: :paras,
       version: "0.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
