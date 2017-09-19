@@ -6,7 +6,7 @@ This project creates a cryptocurrency miner network that looks for strings whose
 
 ## Building the code
 
-Use `mix escript.build` to generate a local escript binary called `project1`
+Use `mix escript.build` to generate a local escript binary called `paras`
 
 ### Note about running the code
 To run this application EPMD must be running as a daemon, run `epmd -daemon` before starting the application to avoid errors like:
@@ -19,9 +19,9 @@ To run this application EPMD must be running as a daemon, run `epmd -daemon` bef
     - There is always at least one process mining a range even when some other process has completed its share and is dealing with network IO for sending messages.
     - Smaller work unit sizes with larger process pools enable maintaing a more fine-grained save state should the server ever crash. This means that too many old messages are not repeated should the server ever respawn with a previously known good state
 
-2. Output of `./project1 4`:
+2. Output of `./paras 4`:
 ```
-$ ./project1 4
+$ ./paras 4
 vyenaman;7P33   0000d9d41ef9a43600d7b68d5da894a3a742ab3d537ab2b891c9495615d462d3
 vyenaman;9jf    0000c579d6e3192f246c878f4677009b43810f1eb226d00d13105df1f81ef1e1
 vyenaman;13wW   00005c23b92b2014fa7f1e5b23d8e439b6e8bd062552329e743d59c9ca15ccd6
@@ -38,11 +38,11 @@ vyenaman;1xsE   0000f29d6f8592ad49a03fa468d107d6f4c9723bb1e97fba26af203742e31a9c
 vyenaman;d5x7   00002dd38f58c64e7a2edb2d0ee887c6d791199ef82a5e3720d899d67e15c6d0
 ```
 
-3. Running time of `./project1 4` with CPU and Real time ratios:
+3. Running time of `./paras 4` with CPU and Real time ratios:
 I ran the binary for exactly 60s (using the `timeout` command) to get the following results:
 
 ```
-$ time timeout -sHUP 60s ./project1 4 > /dev/null
+$ time timeout -sHUP 60s ./paras 4 > /dev/null
 
 real    1m.009s
 user    7m47.740s
