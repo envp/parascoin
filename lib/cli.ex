@@ -1,11 +1,10 @@
 require Logger
 
 defmodule Paras.CLI do
-  use Application
   @moduledoc """
   CLI interface containing entry point `main/1` for running from the CLI
   """
-  alias Paras.{Util.IpAddress, Miner, MinerPool, MiningServer}
+  alias Paras.{Util.IpAddress, Miner, MinerPool, MiningServer, MiningSupervisor}
 
   @doc """
   Runs the application in either client or server mode
@@ -20,7 +19,8 @@ defmodule Paras.CLI do
       {:ok, num_zeros} when is_integer(num_zeros) ->
         own_name = :erlang.list_to_atom('master@' ++ IpAddress.get_ip())
         pool_pid = setup_node(own_name)
-        MiningServer.start_link
+        MiningSupervisor.start_link
+        # MiningServer.start_link
         MiningServer.register(node(), pool_pid)
         printer_pid = spawn(__MODULE__, :print_coins, [])
         work(printer_pid, num_zeros, 0)

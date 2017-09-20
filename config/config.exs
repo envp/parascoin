@@ -19,7 +19,7 @@ use Mix.Config
 # You can also configure a 3rd-party app:
 #
 config :logger, level: :error
-config :parascoin,
+config :paras,
   cookie: :project1,
   pool_scalar: 10,
   block_size: 1024

@@ -14,6 +14,10 @@ defmodule Paras.MinerPool do
     GenServer.start_link(__MODULE__, %{})
   end
 
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, %{})
+  end
+
   @doc """
   Returns the pids in the worker pool associated with this MinerPool PID
   """

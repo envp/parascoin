@@ -15,6 +15,10 @@ defmodule Paras.Miner do
     GenServer.start_link(__MODULE__, [])
   end
 
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, [])
+  end
+
   @doc """
   Finds the bitcoins in the range `first..(first + @block_ssize)`
   Block size is defined to be 1024 by default and pass them to the process `printer_pid`
@@ -55,7 +59,8 @@ defmodule Paras.Miner do
   end
 
   def handle_cast({:mine, printer_pid, target, first}, state) do
-    coins = first..(first + @block_size - 1)
+    blksize = __MODULE__.block_size()
+    coins = first..(first + blksize - 1)
     |> Stream.map(&Base62.encode_int(&1))
     |> Stream.filter(&is_coin?(&1, target))
     |> Enum.map(&(@prefix <> &1))

@@ -10,8 +10,8 @@ defmodule Paras.MiningServer do
   @doc """
   Starts the server in the default state
   """
-  def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: {:global, :mining_server})
+  def start_link(nodes) do
+    GenServer.start_link(__MODULE__, nodes, name: {:global, :mining_server})
   end
 
   @doc """
