@@ -9,7 +9,7 @@ defmodule Paras.CLI do
   @doc """
   Runs the application in either client or server mode
   Client mode is triggered when the passed CLI argument is an IPv4 address
-  Server mode is triggered with the passed CLI argument
+  Server mode is triggered with the passed CLI argument is a positive integer
 
   ## Parameters
     - args: Args array passed to the CLI upon exection
