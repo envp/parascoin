@@ -3,9 +3,9 @@ defmodule Paras.MiningServer do
   Root server that all miners in the network have to register with in order to be
    provided with a mining challenge
   """
-  alias Paras.{MinerPool, Miner}
-
   use GenServer
+
+  alias Paras.{MinerPool, Miner}
 
   @doc """
   Starts the server in the default state

@@ -2,9 +2,10 @@ defmodule Paras.Miner do
   @moduledoc """
   Service representing a single, stateless miner
   """
-  alias Paras.Util.Base62
 
   use GenServer
+
+  alias Paras.Util.Base62
 
   @prefix "vyenaman;"
 

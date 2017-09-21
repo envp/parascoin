@@ -1,10 +1,10 @@
-require Logger
-
 defmodule Paras.CLI do
   @moduledoc """
   CLI interface containing entry point `main/1` for running from the CLI
   """
   alias Paras.{Util.IpAddress, Miner, MinerPool, MiningServer, MiningSupervisor}
+
+  require Logger
 
   @doc """
   Runs the application in either client or server mode

@@ -3,9 +3,9 @@ defmodule Paras.MinerPool do
   Bare bones process pool that can async-broadcast work messages to all children in its tree
   """
 
-  alias Paras.Miner
-
   use GenServer
+
+  alias Paras.Miner
 
   @doc """
   Starts the pool in the default state
