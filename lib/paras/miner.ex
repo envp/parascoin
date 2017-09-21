@@ -53,9 +53,9 @@ defmodule Paras.Miner do
   """
   def is_coin?(string, target) do
     zeros = String.duplicate("0", target)
-    one_extra_zero = zeros <> "0"
-    hashed_string = (@prefix <> string) |> hashstring
-    String.starts_with?(hashed_string, zeros) and (not String.starts_with?(hashed_string, one_extra_zero))
+    (@prefix <> string)
+    |> hashstring
+    |> String.starts_with?(zeros)
   end
 
   def handle_cast({:mine, printer_pid, target, first}, state) do
